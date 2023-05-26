@@ -1,0 +1,36 @@
+---
+# Example code to use with the rXg Action Button App.
+# Use the app to manually trigger Notification Actions
+# and their events. 
+
+# This template is for toggling the SSID of a
+# particular WLAN. In this example, we're hosting 
+# two different events at our arena on alternating
+# days. We want to simply press a button toggle the name 
+# of the SSID so it matches the correct event.
+NotificationAction:
+- name: toggle_ssid
+  event_type: manual
+  backend_scripts:
+  - toggle_ssid
+# This toggle behavior can be adjusted to work with 
+# several different scenarios. 
+BackendScript:
+- name: toggle_ssid
+  body: |-
+    def toggle_ssid
+      wlan = Wlan.find_by(name: 'multi-purpose-arena')
+      ssid = wlan.ssid
+      if ssid.include? 'basketball'
+        wlan.ssid = 'hockey_championship'
+      elsif ssid.include? 'hockey'
+        wlan.ssid = 'basketball_finals'
+      end
+      wlan.save!
+    end
+
+    toggle_ssid
+
+    puts 'ssid toggled successfully'
+  notification_actions:
+  - toggle_ssid
