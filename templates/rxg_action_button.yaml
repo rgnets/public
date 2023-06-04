@@ -8,6 +8,19 @@
 # two different events at our arena on alternating
 # days. We want to simply press a button toggle the name 
 # of the SSID so it matches the correct event.
+
+# To use this backend script, navigate to Services ::
+# Notifcations. Add a Notfication Action with the event
+# type set to manual. Then add a Backend Script and paste
+# the following code into the body of the script, and 
+# assign the notification action to the script. This 
+# example requires a WLAN with the name "multi-purpose-arena" 
+# and changes the SSID to "basketball_finals" if it is 
+# set to "twice_world_tour" and vice versa.
+
+# To watch this example be deployed, watch the following video:
+# https://www.youtube.com/shorts/doIKG06QvVQ
+
 NotificationAction:
 - name: toggle_ssid
   event_type: manual
@@ -21,9 +34,9 @@ BackendScript:
     def toggle_ssid
       wlan = Wlan.find_by(name: 'multi-purpose-arena')
       ssid = wlan.ssid
-      if ssid.include? 'basketball'
-        wlan.ssid = 'hockey_championship'
-      elsif ssid.include? 'hockey'
+      if ssid.include? 'basketball_finals'
+        wlan.ssid = 'twice_world_tour'
+      elsif ssid.include? 'twice_world_tour'
         wlan.ssid = 'basketball_finals'
       end
       wlan.save!
